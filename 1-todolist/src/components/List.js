@@ -13,32 +13,28 @@ export default class List extends Component {
             {
                 id: uuid.v4(),
                 name: "Milk",
-                // addDate: Date(Date.now()).toString(),
-                addDate: 'Fri Sept 13 2019',
+                addDate: Date(Date.now()).split(" ").slice(0, 4).join(" "),
                 completed: false,
                 selected: false
             },
             {
                 id: uuid.v4(),
                 name: "Coffee",
-                // addDate: Date(Date.now()).toString(),
-                addDate: 'Fri Sept 13 2019',
+                addDate: Date(Date.now()).split(" ").slice(0, 4).join(" "),
                 completed: false,
                 selected: false
             },
             {
                 id: uuid.v4(),
                 name: "Tea",
-                // addDate: Date(Date.now()).toString(),
-                addDate: 'Fri Sept 13 2019',
+                addDate: Date(Date.now()).split(" ").slice(0, 4).join(" "),
                 completed: false,
                 selected: false
             },
             {
                 id: uuid.v4(),
                 name: "Eggs",
-                // addDate: Date(Date.now()).toString(),
-                addDate: 'Fri Sept 13 2019',
+                addDate: Date(Date.now()).split(" ").slice(0, 4).join(" "),
                 completed: false,
                 selected: false
             }
@@ -53,7 +49,7 @@ export default class List extends Component {
 
     onButtonClick() {
         const list = this.state.items;
-        // list.push({id: uuid.v4(), name: this.state.value, addDate: Date(Date.now()).toString()})
+        list.push({id: uuid.v4(), name: this.state.value, addDate: Date(Date.now()).split(" ").slice(0, 4).join(" ")})
         this.setState({items: list, value: ""})
     }
 
