@@ -24,11 +24,13 @@ export default class ListItem extends Component {
             <div style={item}>
                 <li style={this.nameStyle()}>
                     <input type='checkbox' onChange={this.props.onCheck.bind(this, this.props.id)} />
+
                     <div style={this.selectStyle()} onClick={this.props.multiSelect.bind(this, this.props.id)}>
                         <div style={name}>{this.props.name}</div>
 
                         <div style={date}>{this.props.date}</div>
                     </div>
+                    
                     <button style={deleteBtn} onClick={this.props.delItem.bind(this, this.props.id)}>X</button>
                 </li>
             </div>

@@ -11,3 +11,5 @@ export default class App extends Component {
         )
     }
 }
+
+//change this to a functional component

@@ -49,7 +49,7 @@ export default class List extends Component {
 
     onButtonClick() {
         const list = this.state.items;
-        list.push({id: uuid.v4(), name: this.state.value, addDate: Date(Date.now()).split(" ").slice(0, 4).join(" ")})
+        list.push({id: uuid.v4(), name: this.state.value, addDate: Date(Date.now()).split(" ").slice(0, 4).join(" "), completed: false, selected: false})
         this.setState({items: list, value: ""})
     }
 
