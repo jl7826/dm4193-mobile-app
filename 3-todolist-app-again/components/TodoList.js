@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, /*ScrollView*,*/ FlatList } from 'react-native'
 import TodoItem from './TodoItem'
 import uuid from 'uuid';
 
@@ -58,11 +58,19 @@ const styles = StyleSheet.create({
     },
 
 })
-
+//Date.now().toLocaleTimeString()
 export default class TodoList extends Component {
+    static navigationOptions = {
+        headerVisible: false
+    }
+
     constructor(props) {
         super(props)
+        //disable live reloading
+        //and enable hot reloading
+        //good for styling, it does not reload the whole app
 
+        //In order to use SectionList: item: {done:[], notDone:[]}
         this.state = {
             value: '',
             items: [
@@ -71,20 +79,23 @@ export default class TodoList extends Component {
                     name: "Milk",
                     addDate: Date(Date.now()).split(" ").slice(0, 5).join(" "),
                     completed: false,
-                    selected: false
+                    selected: false,
+                    details: 'buy milk'
                 },
                 {
                     id: uuid.v4(),
                     name: "Coffee",
                     addDate: Date(Date.now()).split(" ").slice(0, 5).join(" "),
                     completed: false,
-                    selected: false
+                    selected: false,
+                    details: 'buy coffee'
                 },
             ]
         }
 
         this.onBoundInputChange = this.onInputChange.bind(this)
         this.onBoundButtonPress = this.onButtonPress.bind(this)
+        this.onBoundToDetails = this.toDetails.bind(this)
     }
 
     onInputChange(text) {
@@ -92,13 +103,15 @@ export default class TodoList extends Component {
     }
 
     onButtonPress() {
-        const items = this.state.items
+        //FlatList knows to re-render since this is a new array by reference
+        const items = this.state.items.slice(0)
         items.push({
             id: uuid.v4(),
             name: this.state.value,
             addDate: Date(Date.now()).split(" ").slice(0, 5).join(" "),
             completed: false,
-            selected: false
+            selected: false,
+            details: "add details here"
         })
         this.setState({ value: '', items: items })
     }
@@ -114,8 +127,6 @@ export default class TodoList extends Component {
         })
     }
 
-    // // The filter() method creates a new array with all elements that pass the test implemented by the provided function.
-    // // newArr = arr.filter((element) => condition)
     delItem = (id) => {
         this.setState({
             items: this.state.items.filter(item => item.id !== id)
@@ -125,6 +136,7 @@ export default class TodoList extends Component {
     multiSelect = (id) => {
         this.setState({
             items: this.state.items.map(item => {
+                this.props.navigation.navigate('Details', { item: item })
                 if (item.id === id) {
                     item.selected = !item.selected
                 }
@@ -139,16 +151,11 @@ export default class TodoList extends Component {
         })
     }
 
-    render() {
+    toDetails = (item) => {
+        this.props.navigation.navigate('Details', {item: item})
+    }
 
-        const todoItems = this.state.items.map((item) =>
-            <TodoItem
-                key={item.id}
-                item={item}
-                onCheck={this.onCheck}
-                delItem={this.delItem}
-                multiSelect={this.multiSelect}
-            />)
+    render() {
 
         const numSelected = this.state.items.filter(item => item.selected === true).length
 
@@ -166,14 +173,22 @@ export default class TodoList extends Component {
                         style={styles.button}
                         onPress={this.onBoundButtonPress}
                         disabled={this.state.value === ''}>
-
                         <Text style={styles.buttonText}>Add</Text>
-
                     </TouchableOpacity>
                 </View>
-                <View style={styles.todos}>
-                    {todoItems}
-                </View>
+
+                <FlatList
+                    data={this.state.items}
+                    renderItem={({item}) => <TodoItem
+                        key={item.id}
+                        item={item}
+                        onCheck={this.onCheck}
+                        delItem={this.delItem}
+                        multiSelect={this.multiSelect}
+                        toDetails = {this.onBoundToDetails}
+                     />}
+                    keyExtractor={item => item.id}
+                />
 
                 {/* Try to put this as a separate component that can be hidden */}
                 <TouchableOpacity

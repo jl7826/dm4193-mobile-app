@@ -1,6 +1,21 @@
+/*NOTE
+I have spent way too much time on trying to make a separate screen for adding new items (although I've failed). So I couldn't get much done other than barely adding detail screen. I need to figure out how to pass functions with getParam
+*/
+
+/*
+IMPROVEMENTS to consider:
+- Simplify styling by combining overlapping properties
+- make delete all btn show and hide based on numSelect
+- See the documentation on SectionList (it's like sorting by...)
+- separate screen for adding new items
+*/
+
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import TodoList from './components/TodoList'
+import { createAppContainer } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
+import Details from './components/Details'
 
 const styles = StyleSheet.create({
   container: {
@@ -42,6 +57,14 @@ const styles = StyleSheet.create({
   }
 });
 
+const AppStackNavigator = createStackNavigator({
+  Todos: TodoList,
+  Details: Details,
+}, {
+  initialRouteName: 'Todos'
+})
+
+const AppContainer = createAppContainer(AppStackNavigator)
 
 export default function App() {
   return (
@@ -50,7 +73,7 @@ export default function App() {
         <Text style={styles.headerText}>My Todo App</Text>
       </View>
       <View style={styles.mainContent}>
-        <TodoList />
+        <AppContainer/>
       </View>
       <View style={styles.footer}></View>
     </View>

@@ -23,6 +23,15 @@ const styles = StyleSheet.create({
 
 export default class TodoItem extends Component {
 
+    constructor(props){
+        super(props)
+        this.onItemPress = this.onItemPress.bind(this)
+    }
+
+    onItemPress(){
+        this.props.toDetails(this.props.item)
+    }
+
     checkboxStyle = () => {
         return {
             width: 20,
@@ -59,7 +68,8 @@ export default class TodoItem extends Component {
                 />
 
                 <TouchableOpacity 
-                    onPress={this.props.multiSelect.bind(this, id)}
+                    onPress = {this.onItemPress}
+                    // onPress={this.props.multiSelect.bind(this, id)}
                     style={this.selectStyle()}>
                     <Text style={this.nameStyle()}>{name}</Text>
                     <Text>{addDate}</Text>
